@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var returnUrl = ViewData["ReturnUrl"] as string;
+    var error = TempData["Error"] as string;
+}
+<h1>Login</h1>
+@if (!string.IsNullOrEmpty(error))
+{
+    <h2 class="alert-danger" style="padding:20px;">@error</h2>
+}
+<form action="/validate?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="get">
+
+    <input type="text" name="username" placeholder="Username" />
+    <input type="password" name="password" placeholder="Password" />
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
+    <input type="submit" value="login" />
+</form>
+<div>
+    <ul>
+        <li><a href="/login/google?returnUrl=@returnUrl">Login with Google</a></li>
+        <li><a href="/login/okta?returnUrl=@returnUrl">Login with Okta</a></li>
+    </ul>
+</div>
