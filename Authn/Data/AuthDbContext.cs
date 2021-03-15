@@ -37,7 +37,8 @@ namespace Authn.Data
                     Password = "pizza",
                     Firstname = "Bob",
                     Lastname = "Tester",
-                    Mobile = "800-555-1212"
+                    Mobile = "800-555-1212",
+                    Roles = "Admin"
                 });
 
             });

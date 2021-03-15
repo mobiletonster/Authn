@@ -16,5 +16,6 @@ namespace Authn.Data
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Mobile { get; set; }
+        public string Roles { get; set; }
     }
 }
