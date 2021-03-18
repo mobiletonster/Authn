@@ -20,7 +20,7 @@ namespace Authn.Data
                     Firstname = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
                     Lastname = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
                     Mobile = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
-                    Roles = table.Column<string>(type: "TEXT", nullable: true)
+                    Roles = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {

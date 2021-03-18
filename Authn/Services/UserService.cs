@@ -47,6 +47,10 @@ namespace Authn.Services
                 claims.Add(new Claim(ClaimTypes.Email, appUser.Email));
                 claims.Add(new Claim(ClaimTypes.MobilePhone, appUser.Mobile));
                 claims.Add(new Claim(".AuthScheme", "Cookies"));
+                foreach(var r in appUser.RoleList)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, r));
+                }
                 return true;
             }
         }

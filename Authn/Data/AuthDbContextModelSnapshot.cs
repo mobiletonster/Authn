@@ -50,6 +50,7 @@ namespace Authn.Data
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Roles")
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Authn.Data
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20210315230037_Initial")]
+    [Migration("20210316184916_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,7 @@ namespace Authn.Data
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Roles")
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Authn.Data
 {
@@ -17,5 +15,12 @@ namespace Authn.Data
         public string Lastname { get; set; }
         public string Mobile { get; set; }
         public string Roles { get; set; }
+        public List<string> RoleList
+        {
+            get
+            {
+                return Roles.Split(',').ToList();
+            }
+        }
     }
 }

@@ -27,6 +27,7 @@ namespace Authn.Data
                 entity.Property(e => e.Firstname).HasMaxLength(250);
                 entity.Property(e => e.Lastname).HasMaxLength(250);
                 entity.Property(e => e.Mobile).HasMaxLength(250);
+                entity.Property(e => e.Roles).HasMaxLength(1000);
 
                 entity.HasData(new AppUser
                 {
