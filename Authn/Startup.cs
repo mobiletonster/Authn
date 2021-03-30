@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Authn
 {
@@ -59,7 +60,7 @@ namespace Authn
                                 }
                             }
                             claimsIdentity.AddClaim(claim);
-                            
+                            await Task.CompletedTask;
                         }
                     };
                 })
