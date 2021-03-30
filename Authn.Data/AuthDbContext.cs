@@ -34,7 +34,7 @@ namespace Authn.Data
                     Provider = "Cookies",
                     UserId = 1,
                     Email = "bob@admonex.com",
-                    Username = "bob@admonex.com",
+                    Username = "bob",
                     Password = "pizza",
                     Firstname = "Bob",
                     Lastname = "Tester",

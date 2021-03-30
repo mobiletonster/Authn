@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Authn.Data
 {
@@ -19,7 +21,7 @@ namespace Authn.Data
         {
             get
             {
-                return Roles.Split(',').ToList();
+                return Roles?.Split(',').ToList()??new List<string>();
             }
         }
     }

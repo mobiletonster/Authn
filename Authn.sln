@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authn", "Authn\Authn.csproj", "{F28CF4E7-6222-4EFE-8F4B-ACC29435FA4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authn", "Authn\Authn.csproj", "{F28CF4E7-6222-4EFE-8F4B-ACC29435FA4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authn.Data", "Authn.Data\Authn.Data.csproj", "{EACA59FD-B75E-4ADA-8881-0831EC6C74A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authn.Services", "Authn.Services\Authn.Services.csproj", "{436286E4-B24A-44F1-BB57-93C5CE6D0CB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{F28CF4E7-6222-4EFE-8F4B-ACC29435FA4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F28CF4E7-6222-4EFE-8F4B-ACC29435FA4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F28CF4E7-6222-4EFE-8F4B-ACC29435FA4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EACA59FD-B75E-4ADA-8881-0831EC6C74A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EACA59FD-B75E-4ADA-8881-0831EC6C74A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EACA59FD-B75E-4ADA-8881-0831EC6C74A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EACA59FD-B75E-4ADA-8881-0831EC6C74A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436286E4-B24A-44F1-BB57-93C5CE6D0CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436286E4-B24A-44F1-BB57-93C5CE6D0CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436286E4-B24A-44F1-BB57-93C5CE6D0CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436286E4-B24A-44F1-BB57-93C5CE6D0CB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

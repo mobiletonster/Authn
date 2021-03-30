@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Authn.Data
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20210316184916_Initial")]
-    partial class Initial
+    [Migration("20210319051920_Intitial")]
+    partial class Intitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

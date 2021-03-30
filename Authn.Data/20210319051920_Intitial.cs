@@ -2,7 +2,7 @@
 
 namespace Authn.Data
 {
-    public partial class Initial : Migration
+    public partial class Intitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,7 +30,7 @@ namespace Authn.Data
             migrationBuilder.InsertData(
                 table: "AppUsers",
                 columns: new[] { "UserId", "Email", "Firstname", "Lastname", "Mobile", "NameIdentifier", "Password", "Provider", "Roles", "Username" },
-                values: new object[] { 1, "bob@admonex.com", "Bob", "Tester", "800-555-1212", null, "pizza", "Cookies", "Admin", "bob@admonex.com" });
+                values: new object[] { 1, "bob@admonex.com", "Bob", "Tester", "800-555-1212", null, "pizza", "Cookies", "Admin", "bob" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
