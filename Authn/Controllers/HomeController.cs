@@ -39,78 +39,31 @@ namespace Authn.Controllers
         [HttpGet("denied")]
         public IActionResult Denied()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var role = User.Claims.FirstOrDefault(m => m.Type == ClaimTypes.Role)?.Value;
+                if (role == "NewUser") // we have a new user, let's take them to a new user welcome page    
+                {
+                    return Redirect("/newuser");
+                }
+
+            }
             return View();
         }
-
 
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Secured()
         {
-            var idToken = await HttpContext.GetTokenAsync("id_token");
+            //var idToken = await HttpContext.GetTokenAsync("id_token");
             return View();
         }
 
-        [HttpGet("login")]
-        public IActionResult Login(string returnUrl)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        [HttpGet("login/{provider}")]
-        public IActionResult LoginExternal([FromRoute]string provider, [FromQuery] string returnUrl)
-        {
-            if (User != null && User.Identities.Any(identity => identity.IsAuthenticated))
-            {
-                RedirectToAction("", "Home");
-            }
-
-            // By default the client will be redirect back to the URL that issued the challenge (/login?authtype=foo),
-            // send them to the home page instead (/).
-            returnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl;
-            var authenticationProperties = new AuthenticationProperties { RedirectUri = returnUrl };
-            // authenticationProperties.SetParameter("prompt", "select_account");
-            return new ChallengeResult(provider, authenticationProperties);
-        }
 
 
-        [Route("validate")]
-        public async Task<IActionResult> Validate(string username, string password, string returnUrl)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if(_userService.TryValidateUser(username, password, out List<Claim> claims))
-            {
-                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                var items = new Dictionary<string, string>();
-                items.Add(".AuthScheme", CookieAuthenticationDefaults.AuthenticationScheme);
-                var properties = new AuthenticationProperties(items);
-                await HttpContext.SignInAsync(claimsPrincipal, properties);
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                TempData["Error"] = "Error. Username or Password is invalid";
-                return View("login");
-            }
-        }
 
-        [Authorize]
-        public async Task<IActionResult> Logout()
-        {
-            var scheme = User.Claims.FirstOrDefault(c => c.Type == ".AuthScheme").Value;
-            if (scheme == "google")
-            {
-                await HttpContext.SignOutAsync();
-                return Redirect("https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001");
-            }
-            else
-            {
-                return new SignOutResult(new[] { CookieAuthenticationDefaults.AuthenticationScheme, scheme });
-            }
 
-        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

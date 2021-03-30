@@ -1,4 +1,5 @@
 using Authn.Data;
+using Authn.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -7,8 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Authn
 {
@@ -26,6 +29,7 @@ namespace Authn
         {
             services.AddControllersWithViews();
             services.AddDbContext<AuthDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<UserService>();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -39,10 +43,25 @@ namespace Authn
                     {
                         OnSigningIn = async context =>
                         {
-                            var scheme = context.Properties.Items.Where(k=>k.Key==".AuthScheme").FirstOrDefault();
-                            var claim = new Claim(scheme.Key,scheme.Value);
+                            var scheme = context.Properties.Items.Where(k => k.Key == ".AuthScheme").FirstOrDefault();
+                            var claim = new Claim(scheme.Key, scheme.Value);
                             var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                            var userService = context.HttpContext.RequestServices.GetRequiredService(typeof(UserService)) as UserService;
+                            var nameIdentifier = claimsIdentity.Claims.FirstOrDefault(m => m.Type == ClaimTypes.NameIdentifier)?.Value;
+                            if (userService != null && nameIdentifier != null)
+                            {
+                                var appUser = userService.GetUserByExternalProvider(scheme.Value, nameIdentifier);
+                                if (appUser is null)
+                                {
+                                    appUser = userService.AddNewUser(scheme.Value, claimsIdentity.Claims.ToList());
+                                }
+                                foreach (var r in appUser.RoleList)
+                                {
+                                    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, r));
+                                }
+                            }
                             claimsIdentity.AddClaim(claim);
+                            await Task.CompletedTask;
                         }
                     };
                 })
@@ -53,18 +72,11 @@ namespace Authn
                     options.ClientSecret = Configuration["GoogleOpenId:ClientSecret"];
                     options.CallbackPath = Configuration["GoogleOpenId:CallbackPath"];
                     options.SignedOutCallbackPath = Configuration["GoogleOpenId:SignedOutCallbackPath"];
-                    options.SaveTokens = true;
-                    options.Events = new OpenIdConnectEvents()
+                    options.SaveTokens = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        OnTokenValidated = async context =>
-                          {
-                              if (context.Principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "112194501375064838705")
-                              {
-                                  var claim = new Claim(ClaimTypes.Role, "Admin");
-                                  var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
-                                  claimsIdentity.AddClaim(claim);
-                              }
-                          }
+                        // map name claim to ClaimTypes.Name since Google doesn't provide the name claim in the ISO way.
+                        NameClaimType = "name",
                     };
                 }).AddOpenIdConnect("okta", options =>
                 {
@@ -74,10 +86,18 @@ namespace Authn
                     options.CallbackPath = Configuration["OktaOpenId:CallbackPath"];
                     options.SignedOutCallbackPath = Configuration["OktaOpenId:SignedOutCallbackPath"];
                     options.ResponseType = "code";
-                    options.SaveTokens = true;
+                    options.SaveTokens = false;
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
+                })
+                .AddFacebook("facebook", options =>
+                {
+                    options.AppId = Configuration["FBOauth:AppId"];
+                    options.AppSecret = Configuration["FBOauth:ClientSecret"];
+                    options.ClientSecret = Configuration["FBOauth:ClientSecret"];
+                    options.CallbackPath = Configuration["FBOauth:CallbackPath"];
                 });
+
 
 
         }
@@ -102,12 +122,13 @@ namespace Authn
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints => 
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            
         }
     }
 }

@@ -17,5 +17,12 @@ namespace Authn.Data
         public string Lastname { get; set; }
         public string Mobile { get; set; }
         public string Roles { get; set; }
+        public List<string> RoleList
+        {
+            get
+            {
+                return Roles?.Split(',').ToList()??new List<string>();
+            }
+        }
     }
 }

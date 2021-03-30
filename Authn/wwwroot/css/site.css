@@ -62,6 +62,11 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+
+nav li.menu-right {
+    float: right;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
