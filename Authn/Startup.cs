@@ -72,10 +72,10 @@ namespace Authn
                     options.ClientSecret = Configuration["GoogleOpenId:ClientSecret"];
                     options.CallbackPath = Configuration["GoogleOpenId:CallbackPath"];
                     options.SignedOutCallbackPath = Configuration["GoogleOpenId:SignedOutCallbackPath"];
-                    options.SaveTokens = true;
+                    options.SaveTokens = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        // map name claim to ClaimTypes.Name
+                        // map name claim to ClaimTypes.Name since Google doesn't provide the name claim in the ISO way.
                         NameClaimType = "name",
                     };
                 }).AddOpenIdConnect("okta", options =>
@@ -86,7 +86,7 @@ namespace Authn
                     options.CallbackPath = Configuration["OktaOpenId:CallbackPath"];
                     options.SignedOutCallbackPath = Configuration["OktaOpenId:SignedOutCallbackPath"];
                     options.ResponseType = "code";
-                    options.SaveTokens = true;
+                    options.SaveTokens = false;
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                 })
