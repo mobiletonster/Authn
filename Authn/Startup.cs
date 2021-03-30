@@ -72,6 +72,15 @@ namespace Authn
                     options.CallbackPath = Configuration["GoogleOpenId:CallbackPath"];
                     options.SignedOutCallbackPath = Configuration["GoogleOpenId:SignedOutCallbackPath"];
                     options.SaveTokens = true;
+                    options.Events = new OpenIdConnectEvents()
+                    {
+                        OnTokenValidated = async context =>
+                        {
+                            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, claimsIdentity?.Claims?.FirstOrDefault(m => m.Type == "name")?.Value));
+                            await Task.CompletedTask;
+                        }
+                    };
                 }).AddOpenIdConnect("okta", options =>
                 {
                     options.Authority = Configuration["OktaOpenId:Authority"];

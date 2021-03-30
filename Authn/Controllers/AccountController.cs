@@ -78,13 +78,18 @@ namespace Authn.Controllers
         public async Task<IActionResult> Logout()
         {
             var scheme = User.Claims.FirstOrDefault(c => c.Type == ".AuthScheme").Value;
+            string domainUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
             switch (scheme)
             {
                 case "google":
                     await HttpContext.SignOutAsync();
-                    return Redirect("https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001");
+                    var redirect = $"https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue={domainUrl}";
+                    return Redirect(redirect);
                 case "facebook":
                 case "Cookies":
+                    await HttpContext.SignOutAsync();
+                    return Redirect("/");
+                case "microsoft":
                     await HttpContext.SignOutAsync();
                     return Redirect("/");
                 default:
