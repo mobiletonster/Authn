@@ -1,4 +1,4 @@
-# Authn
+# Authn Sample Application
 Authorization and Authentication in ASPNET CORE 5+
 
 This sample application code is a reference implementation and accompanies the video series on Authentication/Authorization in ASPNET CORE 5 published on youtube at these links:
