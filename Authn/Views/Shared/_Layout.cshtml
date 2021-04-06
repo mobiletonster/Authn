@@ -29,14 +29,15 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item menu-right">
-                            <a class="nav-link text-dark" href="/logout">Logout</a>
-                        </li>
+                            <li class="nav-item menu-right">
+                                <a class="nav-link text-dark" href="/logout">Logout</a>
+                            </li>
                         }
-                        else { 
-                        <li class="nav-item menu-right">
-                            <a class="nav-link text-dark" href="/login">Login</a>
-                        </li>
+                        else
+                        {
+                            <li class="nav-item menu-right">
+                                <a class="nav-link text-dark" href="/login">Login</a>
+                            </li>
                         }
                     </ul>
                 </div>

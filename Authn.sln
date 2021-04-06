@@ -5,9 +5,14 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authn", "Authn\Authn.csproj", "{F28CF4E7-6222-4EFE-8F4B-ACC29435FA4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authn.Data", "Authn.Data\Authn.Data.csproj", "{EACA59FD-B75E-4ADA-8881-0831EC6C74A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authn.Data", "Authn.Data\Authn.Data.csproj", "{EACA59FD-B75E-4ADA-8881-0831EC6C74A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authn.Services", "Authn.Services\Authn.Services.csproj", "{436286E4-B24A-44F1-BB57-93C5CE6D0CB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authn.Services", "Authn.Services\Authn.Services.csproj", "{436286E4-B24A-44F1-BB57-93C5CE6D0CB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7EA3988B-1A57-4131-A1C4-F32123D15B15}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

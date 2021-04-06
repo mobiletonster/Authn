@@ -34,7 +34,7 @@ namespace Authn.Controllers
         {
             if (User != null && User.Identities.Any(identity => identity.IsAuthenticated))
             {
-                RedirectToAction("", "Home");
+                return RedirectToAction("", "Home");
             }
 
             // By default the client will be redirect back to the URL that issued the challenge (/login?authtype=foo),
@@ -51,7 +51,9 @@ namespace Authn.Controllers
             return View();
         }
 
+        [ValidateAntiForgeryToken()]
         [Route("validate")]
+        [HttpPost]
         public async Task<IActionResult> Validate(string username, string password, string returnUrl)
         {
             returnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl;

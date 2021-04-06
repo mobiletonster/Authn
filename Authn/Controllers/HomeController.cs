@@ -46,7 +46,6 @@ namespace Authn.Controllers
                 {
                     return Redirect("/newuser");
                 }
-
             }
             return View();
         }
@@ -54,16 +53,10 @@ namespace Authn.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Secured()
         {
+            await Task.CompletedTask;
             //var idToken = await HttpContext.GetTokenAsync("id_token");
             return View();
         }
-
-
-
-
-
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

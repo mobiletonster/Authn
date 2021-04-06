@@ -10,8 +10,8 @@
 {
     <h2 class="alert-danger" style="padding:20px;">@error</h2>
 }
-<form action="/validate?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="get">
-
+<form action="/validate?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+    @Html.AntiForgeryToken()
     <input type="text" name="username" placeholder="Username" />
     <input type="password" name="password" placeholder="Password" />
     <input type="hidden" name="returnUrl" value="@returnUrl" />
