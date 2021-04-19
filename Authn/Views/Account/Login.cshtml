@@ -2,15 +2,109 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    var returnUrl = ViewData["ReturnUrl"] as string;
+    string returnUrl = ViewData["ReturnUrl"] as string;
+    string loginFailedValue = ViewData["LoginFailed"] as string;
+    bool loginFailed = false;
+    if (!string.IsNullOrEmpty(loginFailedValue))
+    {
+        loginFailed = loginFailedValue == "True";
+    }
+
+    string username = ViewData["Username"] as string;
     var error = TempData["Error"] as string;
 }
+<style>
+    @@media screen and (max-width: 730px) {
+        .sign-up-grid-divider {
+            border-top: solid 2px gray;
+        }
+    }
+
+
+    @@media screen and (min-width: 730px) {
+        .sign-up-grid {
+            display: grid;
+            grid-template-areas: "left divider right";
+            grid-template-columns: 300px 30px 300px;
+        }
+
+        .sign-up-grid-left {
+            grid-area: left;
+        }
+
+        .sign-up-grid-divider {
+            border-left: solid 2px gray;
+            grid-area: divider;
+        }
+
+        .sign-up-grid-right {
+            grid-area: right;
+        }
+    }
+
+    .login-label {
+        margin-top: 10px;
+        text-align: center;
+        font-weight: 700;
+        font-size: large;
+        padding-right: 16px;
+        color: rgba(35, 10, 57, 0.84);
+    }
+
+    .login-failed {
+        margin-bottom: 10px;
+        text-align: left;
+        font-weight: 600;
+        font-size: small;
+        padding: 8px;
+        border: 1px solid red;
+        background-color: #ffd8d8;
+    }
+
+    .login-list {
+        margin: 10px;
+    }
+
+        .login-list li {
+            border-radius: 5px;
+            list-style: none;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            padding: 10px;
+            width: 200px;
+        }
+
+            .login-list li a {
+                color: white;
+                text-decoration: none;
+            }
+
+        .login-list i {
+            margin: 5px;
+        }
+
+    #google {
+        background-color: #dd4b3c;
+    }
+
+    #facebook {
+        background-color: #3c5899;
+    }
+
+    #microsoft {
+        background-color: #044185;
+    }
+
+    #okta {
+        background-color: #2084ba;
+    }
+</style>
 <h1>Login</h1>
 @if (!string.IsNullOrEmpty(error))
 {
     <h2 class="alert-danger" style="padding:20px;">@error</h2>
 }
-<form action="/validate?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+@*<form action="/validate?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
     @Html.AntiForgeryToken()
     <input type="text" name="username" placeholder="Username" />
     <input type="password" name="password" placeholder="Password" />
@@ -23,4 +117,55 @@
         <li><a href="/login/okta?returnUrl=@returnUrl">Login with Okta</a></li>
         <li><a href="/login/facebook?returnUrl=@returnUrl">Login with Facebook</a></li>
     </ul>
+</div>*@
+
+<div class="sign-up-grid">
+    <div class="sign-up-grid-left">
+        <div class="login-label">Social Identity Login</div>
+        <ul class="login-list">
+            <li id="google">
+                <a href="/login/google?returnUrl=@returnUrl"><i class="fab fa-google fa-lg"></i> Login with Google</a>
+            </li>
+            <li id="microsoft">
+                <a href="/login/microsoft?returnUrl=@returnUrl"><i class="fab fa-microsoft fa-lg"></i> Login with Microsoft</a>
+            </li>
+            <li id="facebook">
+                <a href="/login/facebook?returnUrl=@returnUrl"><i class="fab fa-facebook-f fa-lg"></i> Login with Facebook</a>
+            </li>
+            <li id="okta">
+                <a href="/login/okta?returnUrl=@returnUrl"><i class="fab fa-okta-f fa-lg"></i> Login with Okta</a>
+            </li>
+        </ul>
+    </div>
+    <div class="sign-up-grid-divider">
+    </div>
+    <div class="sign-up-grid-right">
+        <div class="login-label">Local Login</div>
+        <form action="/validate?returnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+            @Html.AntiForgeryToken()
+            <div class="container">
+                @if (loginFailed)
+                {
+                    <div class="login-failed">Error: username or password incorrect</div>
+                }
+                <label for="username">
+                    <b>Username</b>
+                </label>
+                <input type="text" placeholder="Enter Username" name="username" value="@username" required>
+                <br/>
+                <label for="password">
+                    <b>Password</b>
+                </label>
+                <br/>
+                <input type="password" placeholder="Enter Password" name="password" required>
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                <br/>
+                <button id="login-button" type="submit">Login</button>
+
+                @*<div class="psw">Forgot <a href="#">password?</a></div>
+            <button id="create-button" class="create-account" type="button" onclick="javascript: window.location.href = '/account/createuser';">Create new login</button>*@
+
+            </div>
+        </form>
+    </div>
 </div>
