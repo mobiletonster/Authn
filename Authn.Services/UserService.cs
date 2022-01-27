@@ -29,6 +29,12 @@ namespace Authn.Services
             return appUser;
         }
 
+        public List<AppUser> GetUsers()
+        {
+            var users = _context.AppUsers.ToList();
+            return users;
+        }
+
         public bool TryValidateUser(string username, string password, out List<Claim> claims)
         {
             claims = new List<Claim>();

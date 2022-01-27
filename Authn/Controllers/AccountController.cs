@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,6 +100,34 @@ namespace Authn.Controllers
                 default:
                     return new SignOutResult(new[] { CookieAuthenticationDefaults.AuthenticationScheme, scheme });
             }
+        }
+
+        [Authorize]
+        [HttpGet("impersonate")]
+        public async Task<IActionResult> Impersonate()
+        {
+            var users = _userService.GetUsers();
+            await Task.CompletedTask;
+            return View(users);
+        }
+
+        [Authorize(Roles="Admin")]
+        [HttpGet("impersonate/{userId}")]
+        public IActionResult ImpersonateUser(int userId,[FromServices] IDataProtectionProvider dp)
+        {
+            var user = _userService.GetUserById(userId);
+            var impUser =  new { Id =user.UserId, Firstname =  user.Firstname, Lastname = user.Lastname, RoleList = user.RoleList };
+                        
+            HttpContext.Response.Cookies.Delete("impersonate");
+            CookieOptions options = new CookieOptions();
+            options.Secure = true;
+            options.HttpOnly = true;
+            options.SameSite = SameSiteMode.Strict;
+            var protector = dp.CreateProtector("impersonate");
+            var p = protector.Protect(JsonConvert.SerializeObject(impUser));
+
+            HttpContext.Response.Cookies.Append("impersonate", p, options);
+            return RedirectToAction("impersonate");
         }
     }
 }

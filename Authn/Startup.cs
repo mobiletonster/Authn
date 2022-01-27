@@ -3,12 +3,14 @@ using Authn.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -62,6 +64,24 @@ namespace Authn
                         }
                         claimsIdentity.AddClaim(claim);
                         await Task.CompletedTask;
+                    },
+                    OnValidatePrincipal = async context =>
+                    {
+                        var cookies = context.Request.Cookies;
+                        var dp = context.HttpContext.RequestServices.GetRequiredService(typeof(IDataProtectionProvider)) as IDataProtectionProvider;
+                        var protector = dp.CreateProtector("impersonate");
+                        if (cookies.TryGetValue("impersonate",out string impersonation))
+                        {
+                            var currPrincipal = context.Principal;
+                            var claims = currPrincipal.Claims;
+                            var newClaims = new List<Claim>();
+                            var newPrincipal = new ClaimsPrincipal();
+                            var imp = protector.Unprotect(impersonation);
+                            // context.ReplacePrincipal()
+                        }
+                        {
+                            await Task.CompletedTask;
+                        }
                     }
                 };
             })

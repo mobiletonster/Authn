@@ -32,6 +32,12 @@
                             <li class="nav-item menu-right">
                                 <a class="nav-link text-dark" href="/logout">Logout</a>
                             </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                 <li class="nav-item menu-right">
+                                    <a class="nav-link text-dark" href="/impersonate">Impersonate</a>
+                                </li>                               
+                            }
                         }
                         else
                         {
