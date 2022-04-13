@@ -41,6 +41,7 @@ namespace Authn
             {
                 options.LoginPath = "/login";
                 options.AccessDeniedPath = "/denied";
+                
                 options.Events = new CookieAuthenticationEvents()
                 {
                     OnSigningIn = async context =>

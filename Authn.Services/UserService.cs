@@ -38,6 +38,8 @@ namespace Authn.Services
         public bool TryValidateUser(string username, string password, out List<Claim> claims)
         {
             claims = new List<Claim>();
+            var appUsers = _context.AppUsers.Where(a=>a.Username == username).Where(a=>a.Password == password); 
+
             var appUser = _context.AppUsers
                 .Where(a => a.Username == username)
                 .Where(a => a.Password == password).FirstOrDefault();
