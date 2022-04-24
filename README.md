@@ -13,8 +13,7 @@ PART 2 Video: https://www.youtube.com/watch?v=K0Z7GTOvbMo
 PART 2a (supplement) Video: https://www.youtube.com/watch?v=z-Hll4Xddjs
 
 ## PART 3 - Authentication - IDaaS (Okta) and Multiple Challenge Providers
-PART 3 Video:
-
+PART 3 Video: https://youtu.be/Cej_u3fb9rI
 
 For more details, visit the blog at: https://mobiletonster.com
 
