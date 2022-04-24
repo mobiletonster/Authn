@@ -66,7 +66,7 @@ namespace Authn.Controllers
                 items.Add(".AuthScheme", CookieAuthenticationDefaults.AuthenticationScheme);
                 var properties = new AuthenticationProperties(items);
                 await HttpContext.SignInAsync(claimsPrincipal, properties);
-                return Redirect(returnUrl);
+                return LocalRedirect(returnUrl);
             }
             else
             {
